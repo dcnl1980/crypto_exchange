@@ -1,0 +1,29 @@
+body {
+	margin: 2% 5%;
+	background-color: white;
+}
+
+table {
+	min-height: 200px;
+	width: 100%; 
+    border-collapse: collapse;
+}
+
+td {
+	padding-top:15px;
+	padding-bottom: 5px;
+	border: 2px solid white;
+}
+
+.main {
+	text-align: center;
+	width: 100%;
+	border-radius: 5px;
+	min-height: 500px;
+	background-color: #00bcd4;
+	display: inline-block;
+}
+
+.info-0 {
+	text-align: right!important;
+}
