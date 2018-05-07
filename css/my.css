@@ -1,27 +1,45 @@
 body {
 	margin: 2% 5%;
-	background-color: white;
+	background-color: #eeeeee;
 }
 
 table {
+	border: 0;
 	min-height: 200px;
-	width: 100%; 
-    border-collapse: collapse;
+	border-spacing: 20px 10px;
+}
+
+th {
+	text-align: left;
 }
 
 td {
 	padding-top:15px;
+	text-align: right;
 	padding-bottom: 5px;
-	border: 2px solid white;
+	border-bottom: 2px solid gray;
+}
+
+.ilb {
+	float: left;
+}
+
+.ilb:last-child {
+	float: justify;
+}
+
+.main:after {
+    display: block;
+    content: '';
+    clear: both;
 }
 
 .main {
-	text-align: center;
 	width: 100%;
-	border-radius: 5px;
 	min-height: 500px;
-	background-color: #00bcd4;
-	display: inline-block;
+    text-align: justify;
+	border-radius: 5px;
+	background-color: white;
 }
 
 .info-0 {

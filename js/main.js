@@ -1,24 +1,15 @@
-var first = null;
-var two = null;
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-function Select(number, elm) {
-	var temp = document.getElementById(elm);
+async function Select(number) {
+	var temp = document.getElementById("sct"+number);
+
+	temp.style.background = "#A9A9A9";
+	temp.style.borderTopLeftRadius  = "2px";
+	temp.style.borderTopRightRadius  = "2px";
+
+	await sleep(2000);
 	
-	if (first == null) {
-		first = number;
-		temp.innerHTML = "(You give) " + temp.textContent;
-		temp.style.background = "white";
-	}
-	
-	else if(number == first)
-		alert("Select another method of obtaining, please");
-	
-	else if (two == null) {
-		two = number;
-		temp.innerHTML = "(You get) " + temp.textContent;
-		temp.style.background = "white";
-	}
-	
-	if(first != null && two != null)
-		document.location = "127.0.0.1/exchange.php?give="+first+"&get="+two;
+	document.location = "127.0.0.1/exchange.php?pair="+number;
 }
