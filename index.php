@@ -1,9 +1,9 @@
 <?php
 
 	include 'include/function.php';
-
-	//echo retPrice("f-c", 'CZK', 'ETH');
-
+	
+	$rezult = SQL_Query("full","SELECT COUNT(*) FROM `pair`");
+	
 ?>
 <!DOCTYPE HTML>
 <html>
@@ -25,17 +25,31 @@
 						<th>Pair</th>
 						<th>Rate</th>
 					</tr>
-					<tr>
-						<td id="sct5" onclick="Select(5);">Sberbank → Bitcoin</td>
-						<td>246 000 = 1</td>
-					</tr>
-					<tr>
-						<td id="sct6" onclick="Select(6);">Bitcoin → Sberbank</td>
-						<td>246 000 = 1</td>
-					</tr>
-					<tr>
-						<td colspan="3">Design and more is coming soon...</td>
-					</tr>
+					<?php
+					
+						if($rezult['COUNT(*)'] > 0) {
+							$row = SQL_Query("nfull","SELECT * FROM `pair`");
+							
+							while($row2 = $row->fetch_assoc()) {
+								echo '					<tr>
+						<td id="sct'.$row2['id'].'" onclick="Select('.$row2['id'].');">'.$row2['name'].'</td>
+						<td>';
+						
+							if($row2['d_type'] == "f-c") {
+								echo retPrice("f-c", $row2['f_sk'], $row2['t_sk']).' = 1';
+							} else
+								echo "1 = ".retPrice("c-f", $row2['f_sk'], $row2['t_sk']);
+						
+							echo '</td>
+					</tr>'."\n";
+							}
+						} else {
+							echo '<tr>
+						<td colspan="2">No pair...</td>
+					</tr>'."\n";
+						}
+					
+					?>
 				</table>
 			</div>
 			<div class="ilb">

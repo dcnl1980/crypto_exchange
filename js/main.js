@@ -11,5 +11,19 @@ async function Select(number) {
 
 	await sleep(2000);
 	
-	document.location = "127.0.0.1/exchange.php?pair="+number;
+	document.location = "/exchange.php?pair="+number;
+}
+
+async function caclGet(deal,price) {
+	while(true) {
+		var b = 0;
+		
+		if(deal == "f-c") 
+			b = 1*document.getElementById('cs').value/price;
+		else 
+			b = document.getElementById('cs').value*price/1;
+		
+		document.getElementById('getting').innerHTML = b;
+		await sleep(1300);
+	}
 }
