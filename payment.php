@@ -1,12 +1,42 @@
 <?php
 
 	include  'include/function.php';
-
-	if(isset($_POST['payment']) && isset($_POST['tx_id']) ) {
-		$crypto = true;
+	
+	$info = null;
+	
+	if(isset($_POST['tx_id']) && strlen($_POST['tx_id']) > 4 && isset($_POST['sec'])) {
+		$payment = false;
+		$sec = preg_replace("[^\w\d\s]","",$_POST['sec']);
 		$tx_id = preg_replace("[^\w\d\s]","",$_POST["tx_id"]);
 		
-		$payment = Find_Payment($tx_id, $row['f_sk'], retCrypto($_POST['c_m'], retPrice($row['d_type'], $row['f_sk'], $row['t_sk'])));
+		$row = SQL_Query("full","SELECT `f_amm`,`t_amm`,`receiver` FROM `deals` WHERE `sec` = '".$sec."'");
+		$row2 = SQL_Query("full","SELECT `f_sk`, `t_sk` FROM `pair` WHERE `name` = '".retPNAME($sec)."'");
+		
+		if(retDType(retPNAME($sec)) == "f-c")
+			if($tx_id == "Payed")
+				$payment = true;
+		else 
+			$payment = Find_Payment($tx_id, $row2['f_sk'], $row['f_amm']);
+		
+		if($payment) {
+			if(retDType(retPNAME($sec)) == "f-c") {
+				sendMessage(urlencode("If you received payment with desc.: ".$sec." with ".$row['f_amm']." ".$row2['f_sk']."\nPair: ".retPNAME($sec)."\nSend: ".$row['t_amm']." ".$row2['t_sk']."\nTo: ".$row['receiver']));
+			} else 
+				sendMessage(urlencode("Client maked payment, pair: ".retPNAME($sec)."\nSend: ".$row['t_amm']." ".$row2['t_sk']."\nTo: ".$row['receiver']));
+			
+			SQL_Query("nfull", 'UPDATE `deals` SET `pair`="",`f_amm`="",`t_amm`="",`receiver`="",`date`="",`payment`="" WHERE `sec`= "'.$sec.'"');
+			$info = "<b>Succesfull</b>! Please wait 5-10 min.";
+		} else {
+			$info = "Payment not found.";
+		}
+	} else if (isset($_POST['sec'])) {
+		$sec = preg_replace("[^\w\d\s]","",$_POST['sec']);
+		
+		if(SQL_Query("full","SELECT COUNT(`id`) FROM `deals` WHERE `sec` = '".$sec."'")['COUNT(`id`)'] == 0) {
+			$info = 'Not found...';
+		} else {
+			$info = retText($sec);
+		}
 	}
 
 ?>
@@ -15,7 +45,7 @@
 	<head>
 		<meta charset="utf-8">
 		<link rel="stylesheet" href="css/my.css">
-		<title><?php echo $row['name']; ?> | Exchange</title>
+		<title>Payment | Exchange</title>
 	</head>
 	<body class="content">
 		<div class="info-0">
@@ -28,7 +58,18 @@
 				<br>
 				<br>
 				<br>
-				In process
+				<form method="post">
+					<input type="text" class="material" name="sec" placeholder="# You sec. code" required>
+					<br>
+					<br>
+					<input type="text" class="material" name="tx_id" placeholder="TX ID">
+					<br>
+					<br>
+					<button type="submit" class="btn-material">Submit</button>
+				</form>
+				<br>
+				<br>
+				<?php echo $info; ?>
 			</div>
 		</div>
 	</body>

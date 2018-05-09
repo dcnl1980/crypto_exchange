@@ -62,19 +62,13 @@
 			}
 			
 			else if($crypto == "BTC") {
-				$pr_lin = 0;
-				$sa_pr = $price*10**8;
-		
-				$var = file('https://blockchain.info/rawtx/'.$tx_id);
-				
-				for($i=10; $i != sizeof($var); $i++)
-					if(strstr($var[$i], $btc))
-						$pr_lin = $i+1;
-
-				$p_p_btc = substr($var[$pr_lin], 17, -2);
-				
-				if ($p_p_btc >= $sa_pr)
-					return true;
+				$massive = implode('', file("https://blockchain.info/rawtx/$tx_id"));
+				$massive = json_decode($massive, true);
+					
+				for($i =0; $i != count($massive['out']); $i++)
+					if($massive['out'][$i]['addr'] == $btc)
+						if($massive['out'][$i]['value'] >= $price*10**8)
+							return true;
 			}
 			
 			else if($crypto == "LTC") {
@@ -105,7 +99,9 @@
 	}
 	
 	function SQL_Query($tp, $sql) {
-		$conn = new mysqli("localhost", "root", "", "exchange");
+		include 'settings.php';
+		
+		$conn = new mysqli($host, $user, $passw, "exchange");
 		$result = $conn->query($sql);
 		if($tp == "full") {
 			$row = $result->fetch_assoc();
@@ -118,5 +114,71 @@
 			return $result;
 		}
 	}
-
+	
+	function retWallet($name) {
+		include 'settings.php';
+		
+		if($name = "XMR")
+			return $xmr;
+		else if($name = "ETH")
+			return $eth;
+		else if($name = "BTC")
+			return $btc;
+		else if($name = "DASH")
+			return $dash;
+		else if($name = "LTC")
+			return $ltc;
+	}
+	
+	function retCrypto() {
+		
+	}
+	
+	function retAmmount($d_type, $price,$ammo) {
+		if($d_type == "f-c")
+			return 1*$ammo/$price;
+		else
+			return $ammo*$price/1; 
+	}
+	
+	function checkExch() {
+		if(!(isset($_GET['pair'])))
+			die;
+		
+		else if(!(is_numeric($_GET['pair'])))
+			die;
+		
+		else if(SQL_Query("full","SELECT COUNT(`name`) FROM `pair` WHERE `id` = ".$_GET['pair'])['COUNT(`name`)'] == 0)
+			die;
+	}
+	
+	function retDType($pair) {
+		$row = SQL_Query("full", "SELECT `d_type` FROM `pair` WHERE `name`= '".$pair."'");
+		
+		return $row['d_type'];
+	}
+	
+	function retPNAME($sec) {
+		$row = SQL_Query("full","SELECT `pair` FROM `deals` WHERE `sec` = '".$sec."'");
+		
+		return $row['pair'];
+	}
+	
+	function retText($sec) {
+		$wallet = null;
+		
+		include 'include/settings.php';
+		
+		$row = SQL_Query("full", "SELECT `f_amm`, `t_amm` FROM `deals` WHERE `sec` = '$sec'");
+		$row2 = SQL_Query("full", "SELECT  `f_sk`, `t_sk` FROM `pair` WHERE `name` = '".retPNAME($sec)."'");
+		
+		if(retDType(retPNAME($sec)) == "f-c") {
+			$wallet = $card;
+		} else {
+			$wallet = retWallet($row2['f_sk']);
+		}
+	
+		return '<span style="font-size: 20px;">Hi, you must send '.$row['f_amm'].' '.$row2['f_sk'].' to <b>'.$wallet.'</b><br>With description: <b>'.$sec.'</b><br>And you get: '.$row['t_amm'].' '.$row2['t_sk'].'</span>';;
+	}
+	
 ?>

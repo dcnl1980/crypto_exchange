@@ -6,12 +6,13 @@
 	$bot_token = "";
 	$ch_id = '';
 	
-	$dash = "";
-	$btc = "";
-	$eth = "";
-	$ltc = "";
+	$card = '';
 	
 	$xmr = "";
-	$vwk = ""; //Monero viewkey
+	$vwk = "";
 	
+	$btc = "";
+	$eth = "";
+	$dash = "";
+	$ltc = "";
 ?>
