@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 07, 2018 at 10:19 PM
+-- Generation Time: May 09, 2018 at 10:20 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 5.6.35
 
@@ -30,12 +30,13 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `deals` (
   `id` int(11) NOT NULL,
+  `sec` text COLLATE utf8_unicode_ci NOT NULL,
   `pair` text COLLATE utf8_unicode_ci NOT NULL,
+  `f_amm` text COLLATE utf8_unicode_ci NOT NULL,
+  `t_amm` text COLLATE utf8_unicode_ci NOT NULL,
   `receiver` text COLLATE utf8_unicode_ci NOT NULL,
-  `a_first` text COLLATE utf8_unicode_ci NOT NULL,
-  `a_second` text COLLATE utf8_unicode_ci NOT NULL,
   `date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `status` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'open'
+  `payment` varchar(5) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
@@ -76,13 +77,13 @@ ALTER TABLE `pair`
 -- AUTO_INCREMENT for table `deals`
 --
 ALTER TABLE `deals`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT for table `pair`
 --
 ALTER TABLE `pair`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
