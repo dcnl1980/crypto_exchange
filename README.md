@@ -19,3 +19,10 @@ Open-source cryptocoin exchange
 - And receive bot-tocken (Ex. 563755814:AAHnd7SCiYVg2Nx02p1tqKsfkBD0VEUzvPY) <- $bot_token
 - Write to https://telegram.me/FalconGate_Bot message: `/get_my_id` <- $ch_id 
 - Find bot with name (you set name) and send: `/start` to he
+
+# Setup
+- Import .sql
+- Edit `include/settings.php`
+
+
+Admin-panel is coming...
