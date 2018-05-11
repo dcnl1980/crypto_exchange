@@ -130,10 +130,6 @@
 			return $ltc;
 	}
 	
-	function retCrypto() {
-		
-	}
-	
 	function retAmmount($d_type, $price,$ammo) {
 		if($d_type == "f-c")
 			return 1*$ammo/$price;
@@ -162,6 +158,15 @@
 		$row = SQL_Query("full","SELECT `pair` FROM `deals` WHERE `sec` = '".$sec."'");
 		
 		return $row['pair'];
+	}
+	
+	function checkTX($tx_id) {
+		$row = SQL_Query("full","SELECT COUNT(`tx_id`) FROM `tx_id` WHERE `tx_id` = '$tx_id'");
+		
+		if($row['COUNT(`tx_id`)'] > 0)
+			return true;
+		else
+			return false;
 	}
 	
 	function retText($sec) {
