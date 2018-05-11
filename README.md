@@ -1,3 +1,6 @@
+[![codebeat badge](https://codebeat.co/badges/e9f27ba5-84a0-4dd3-8430-7390f01093cd)](https://codebeat.co/projects/github-com-thedevfromker-crypto_exchange-master)
+
+
 # crypto_exchange
 Open-source cryptocoin exchange
 
